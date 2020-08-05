@@ -1,0 +1,19 @@
+qmail-ses usage
+===============
+
+The qmail-ses tool installs into /var/qmail/bin/qmail-remote-ses and acts as a
+drop-in replacement for qmail-remote.  (Creating a link from qmail-remote to
+qmail-remote-ses is left as an exercise for the user.)
+
+It uses three control files:
+/var/qmail/control/ca-bundle.crt	-- CA bundle for Amazon SES endpoints
+/var/qmail/control/ses-key		-- AWS credentials
+/var/qmail/control/ses-region		-- AWS region
+
+These paths can be overridden via compiler defines.
+
+The AWS credential file should have two lines:
+ACCESS_KEY_ID=...
+ACCESS_KEY_SECRET=...
+
+The AWS region file should have a single line consisting of the region name.
