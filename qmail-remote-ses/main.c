@@ -150,7 +150,7 @@ mkreq(const char * id, const char * key, const uint8_t * msg, size_t msglen,
 	const char * errstr = "Internal error";
 
 	/* Create base64-encoded message. */
-	if ((m_msg = malloc(((msglen + 2) / 3) * 4 + 1)) == NULL)
+	if ((m_msg = malloc(b64len(msglen) + 1)) == NULL)
 		goto err0;
 	b64encode(msg, m_msg, msglen);
 
@@ -168,7 +168,8 @@ mkreq(const char * id, const char * key, const uint8_t * msg, size_t msglen,
 
 	/* Add Destination fields. */
 	for (i = 0; i < ndest; i++) {
-		sprintf(m_dest, "Destinations.member.%d", i + 1);
+		if (sprintf(m_dest, "Destinations.member.%d", i + 1) < 0)
+			goto err2;
 		if (addpair(body, m_dest, dest[i]))
 			goto err2;
 	}

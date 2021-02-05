@@ -114,7 +114,7 @@ sslreq2(const char * host, const char * port, const char * certfile,
 	struct addrinfo * res;
 	struct addrinfo * r;
 	int error;
-	int s;
+	int s = -1;
 	const SSL_METHOD * meth;
 	SSL_CTX * ctx;
 	SSL * ssl;
@@ -130,6 +130,7 @@ sslreq2(const char * host, const char * port, const char * certfile,
 	/* Perform DNS lookup. */
 	if ((error = getaddrinfo(host, port, &hints, &res)) != 0)
 		return "DNS lookup failed";
+	(void)error; /* error is not used beyond this point. */
 
 	/* Iterate through the addresses we obtained trying to connect. */
 	for (r = res; r != NULL; r = r->ai_next) {
