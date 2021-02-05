@@ -114,7 +114,7 @@ sslreq2(const char * host, const char * port, const char * certfile,
 	struct addrinfo * res;
 	struct addrinfo * r;
 	int error;
-	int s;
+	int s = -1;
 	const SSL_METHOD * meth;
 	SSL_CTX * ctx;
 	SSL * ssl;
