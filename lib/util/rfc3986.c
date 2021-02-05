@@ -46,7 +46,7 @@ rfc3986_encode(const char * s)
 			t[j++] = s[i];
 		} else {
 			/* Treat the byte as unsigned. */
-			b = s[i];
+			b = (uint8_t)s[i];
 
 			/* Encode the character. */
 			t[j++] = '%';
