@@ -320,5 +320,8 @@ main(int argc, char * argv[])
 	printf("KMessage accepted by SES\n");
 	putchar(0);
 
+	/* Clean up. */
+	free(region);
+
 	return (0);
 }
