@@ -4,6 +4,7 @@
 #include <netinet/in.h>
 
 #include <assert.h>
+#include <limits.h>
 #include <netdb.h>
 #include <stdint.h>
 #include <string.h>
@@ -119,7 +120,12 @@ sslreq2(const char * host, const char * port, const char * certfile,
 	SSL_CTX * ctx;
 	SSL * ssl;
 	int readlen;
+	int maxresplen;
 	size_t resppos;
+
+	/* Sanity check and set the maximum response length. */
+	assert(*resplen <= INT_MAX);
+	maxresplen = (int)*resplen;
 
 	/* Create resolver hints structure. */
 	memset(&hints, 0, sizeof(hints));
@@ -215,9 +221,9 @@ sslreq2(const char * host, const char * port, const char * certfile,
 
 	/* Read the response. */
 	for (resppos = 0; ; resppos += readlen) {
-		if ((readlen = SSL_read(ssl, &resp[resppos], *resplen)) <= 0)
+		if ((readlen = SSL_read(ssl, &resp[resppos], maxresplen)) <= 0)
 			break;
-		*resplen -= readlen;
+		maxresplen -= readlen;
 	}
 	*resplen = resppos;
 
