@@ -220,7 +220,7 @@ sslreq2(const char * host, const char * port, const char * certfile,
 		return "Could not write payload";
 
 	/* Read the response. */
-	for (resppos = 0; ; resppos += readlen) {
+	for (resppos = 0; ; resppos += (size_t)readlen) {
 		if ((readlen = SSL_read(ssl, &resp[resppos], maxresplen)) <= 0)
 			break;
 		maxresplen -= readlen;
