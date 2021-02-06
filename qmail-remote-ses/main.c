@@ -1,3 +1,5 @@
+#include <assert.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -202,9 +204,13 @@ mkreq(const char * id, const char * key, const uint8_t * msg, size_t msglen,
 	if (asprintf(&server, "email.%s.amazonaws.com", region) == -1)
 		goto err2;
 
+	/* Sanity check request length. */
+	assert(strlen(req) <= INT_MAX);
+
 	/* Make HTTPS request. */
 	if ((errstr = sslreq2(server, "443", CERTFILE, (uint8_t *)req,
-	    strlen(req), (uint8_t *)s_body, bodylen, resp, resplen)) != NULL)
+	    (int)strlen(req), (uint8_t *)s_body, bodylen, resp, resplen))
+	    != NULL)
 		goto err3;
 
 	/* Don't need these any more. */
